@@ -1,0 +1,13 @@
+border-b-[3px] border-b-[#181511]
+
+ <span>Tamaños</span>
+              <div>
+                <select v-model="item.tamanio" >
+                  <option v-for="tamanio in tamanios" :value="tamanio.id">@{{tamanio.nombre}}</option>
+                </select>
+              </div>
+            </div>
+
+
+
+            Primera Forma :
