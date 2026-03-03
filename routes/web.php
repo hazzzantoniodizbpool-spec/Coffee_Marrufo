@@ -8,6 +8,7 @@ use App\Http\Controllers\TamanioController;
 use App\Http\Controllers\ExtraController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\DbUpController; 
+use App\Http\Controllers\DashboardController;
 
 
 Route::get('/', function () {
@@ -20,9 +21,17 @@ Route::get('/venta',[CoffeshopController::class, 'venta'])->name('venta');
 Route::get('/venta/productos',[CoffeshopController::class, 'productos'])->name('productos');
 Route::get('/venta/categorias',[CoffeshopController::class, 'categorias'])->name('categorias');
 Route::get('/venta/tamanios',[CoffeshopController::class, 'tamanios'])->name('tamanios');
+
 //faker
 Route::get('/dbup/cliente',[DbUpController::class, 'clientes'])->name('clientes');
 Route::get('/dbup/orden',[DbUpController::class, 'orden'])->name('orden');
+Route::get('/dashboard/ventas',[DashboardController::class, 'total_ventas'])->name('total_ventas');
+Route::get('/dashboard/ventas/canal',[DashboardController::class, 'total_ventas_canal'])->name('total_ventas_canal');
+Route::get('/dashboard/ventas/producto',[DashboardController::class, 'total_ventas_producto'])->name('total_ventas_producto');
+Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard');
+
+    
+
 
 //faker
 
