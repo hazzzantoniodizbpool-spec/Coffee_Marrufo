@@ -14,6 +14,7 @@ class DashboardController extends Controller
 {
     function index(){
         $datos=array();
+        $datos['productos']=Producto::all();
         return view('Dashboard.index')->with($datos);
     }
 
