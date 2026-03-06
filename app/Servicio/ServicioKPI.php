@@ -16,13 +16,31 @@ class ServicioKPI
         //Meses-cuantos meses antes genero el KPI
     
     /**
-     * select SUM(orden.total)
-     * from orden
-     * where DATE_SUB(now(), INTERVAL 3 MONTH)
      * 
      * select SUM(orden.total)
      * from orden
      * where DATE_SUB(now(), INTERVAL 3 MONTH)
+     * 
+     * 
+     * select SUM(detalle_orden.cantidad*detalle_orden.precio)
+     * from orden
+     * join detalle_orden on detalle_orden.idorden=orden.id
+     * where detalle_orden.idproducto=1
+     * and DATE_SUB(now(), INTERVAL 3 MONTH)
+     * 
+     * SIN FILTRO DE PRODUCTO
+     *  select SUM(Orden.total)
+     * from orden
+     * where DATE_SUB(now(), INTERVAL 3 MONTH)
+     * group by DATE_FORMAT(orden.fecha, "%m-%Y")
+     * order by DATE_FORMAT(orden.fecha, "%Y-%m") desc
+     * 
+     * CON FILTRO DE PRODUCTO
+     * select SUM(detalle_orden.cantidad*detalle_orden.precio)
+     * from orden
+     * join detalle_orden on orden.id=detalle_orden.idorden
+     * where DATE_SUB(now(), INTERVAL 3 MONTH)
+     * and detalle_orden.idproducto=13
      * group by DATE_FORMAT(orden.fecha, "%m-%Y")
      * order by DATE_FORMAT(orden.fecha, "%Y-%m") desc
      */
@@ -31,15 +49,30 @@ class ServicioKPI
             $objeto->meses = 3;
        }
        
+       if(!isset($objeto->idproducto)){
+            $objeto->idproducto = 0;
+       }
+
        if(!isset($objeto->tendencias)){
             $objeto->tendencias = false;
        }
        //1.Defino la consulta base
-        $consulta = DB::table("orden")
+       if($objeto->idproducto==0){
+        //sin filtro de producto
+            $consulta = DB::table("orden")
                 ->select(
                     DB::raw("SUM(orden.total) as total_ventas"))
                 ->whereRaw("orden.fecha >= DATE_SUB(now(), INTERVAL ".$objeto->meses." MONTH)");
-
+       }
+       else{
+        //con filtro de producto
+        $consulta = DB::table("orden")
+                ->join("detalle_orden", "detalle_orden.idorden", "=", "orden.id")
+                ->select(
+                    DB::raw("SUM(detalle_orden.cantidad * detalle_orden.precio) as total_ventas"))
+                ->whereRaw("orden.fecha >= DATE_SUB(now(), INTERVAL ".$objeto->meses." MONTH)")
+                ->where("detalle_orden.idproducto", $objeto->idproducto); // 👈 CORREGIDO
+       }
 
         //2.configuro la consulta 
         if($objeto->tendencias){

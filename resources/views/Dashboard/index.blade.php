@@ -244,8 +244,36 @@
         } 
         ,watch:{
             filtro_chart_1:function(newValue){
-              console.log('cambio el valor');
+
+              this.series1.splice(0,this.series1.length);
+
+              var xhr = new XMLHttpRequest();
+          xhr.open('POST', '{{ route("total_ventas") }}', true);
+          var self = this;
+          xhr.onreadystatechange = function() {
+            if (this.readyState == 4){
+              //pregunto si salio bien
+              if (this.status == 200) {
+                info=JSON.parse(this.responseText);
+                self.total_ventas = info.total;
+                for(i=0;i<info.tendencia.length;i++){
+                  self.series1.push(
+                    {
+                      name: info.tendencia[i].fecha,
+                      data: [parseFloat(info.tendencia[i].total_ventas)]
+                    }
+                  );
+                }
+                console.log('ya cargo' ,info);
             }
+          } 
+        }
+          xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          xhr.send(JSON.stringify({
+                                  idproducto:newValue
+                                  ,_token:'{{ csrf_token() }}'
+                                }));
+            } 
         }
         ,components: {
           apexchart: VueApexCharts

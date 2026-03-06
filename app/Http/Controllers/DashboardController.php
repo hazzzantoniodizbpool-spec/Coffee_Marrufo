@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Usuario;
 use App\Models\Edades;
@@ -18,13 +18,18 @@ class DashboardController extends Controller
         return view('Dashboard.index')->with($datos);
     }
 
-    function total_ventas(){
+    function total_ventas(Request $r){
+        $context=$r->all();
         $servicio=new ServicioKPI();
         $objeto=new \stdClass();
+        if(isset($context['idproducto']))
+            $objeto->idproducto=$context['idproducto'];
         $info=$servicio->total_ventas($objeto);
 
         $objeto1=new \stdClass();
         $objeto1->tendencias=true;
+        if(isset($context['idproducto']))
+            $objeto1->idproducto=$context['idproducto'];
         $info2=$servicio->total_ventas($objeto1);
 
         $resultado=new \stdClass();

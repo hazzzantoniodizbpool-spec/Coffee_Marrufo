@@ -53,14 +53,13 @@ class ServicioOrden
             else
                 $d->idpromocion=0;
 
-            // 🔴 CORREGIDO: PRIMERO guardar el detalle para generar el ID
-            $d->save();
+            
 
-            // 🔴 CORREGIDO: AHORA procesar los extras con el ID ya existente
+            
             foreach($elemento['extras'] as $extra){
                 $ex=new ExtraOrden();
                 $ex->idextra=$extra['id'];
-                $ex->iddetalle_orden=$d->id; // ✅ AHORA SÍ TIENE ID
+                $ex->iddetalle_orden=$d->id; 
                 $ex->precio=$extra['precio'];
                 if(isset($extra['cantidad']))
                     $ex->cantidad=$extra['cantidad'];
@@ -71,11 +70,10 @@ class ServicioOrden
                 $ex->save();
             }
 
-            // 🔴 CORREGIDO: Calcular total después de guardar extras
+
             $total=$total+($d->cantidad*$d->precio);
             $num_productos=$num_productos+$d->cantidad;
             
-            // 🔴 NOTA: El $d->save() de aquí se ELIMINÓ porque ya se guardó arriba
         }
 
         $o->total=$total;
