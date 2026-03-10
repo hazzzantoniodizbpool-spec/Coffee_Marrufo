@@ -53,6 +53,7 @@ class ServicioOrden
             else
                 $d->idpromocion=0;
 
+            $d->save();
             
 
             

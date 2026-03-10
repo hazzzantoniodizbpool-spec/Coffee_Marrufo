@@ -27,8 +27,11 @@ Route::get('/dbup/cliente',[DbUpController::class, 'clientes'])->name('clientes'
 Route::get('/dbup/orden',[DbUpController::class, 'orden'])->name('orden');
 //Route::get('/dashboard/ventas',[DashboardController::class, 'total_ventas'])->name('total_ventas');
 Route::match(['GET','POST'],'/dashboard/ventas',[DashboardController::class, 'total_ventas'])->name('total_ventas');
+Route::match(['GET','POST'],'/dashboard/ventas/categoria',[DashboardController::class, 'total_ventas_categoria'])->name('total_ventas_categoria');
 Route::get('/dashboard/ventas/canal',[DashboardController::class, 'total_ventas_canal'])->name('total_ventas_canal');
 Route::get('/dashboard/ventas/producto',[DashboardController::class, 'total_ventas_producto'])->name('total_ventas_producto');
+
+Route::match(['GET','POST'],'/dashboard/demograficos/genero',[DashboardController::class, 'demografico_genero'])->name('demografico_genero');
 Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard');
 
     

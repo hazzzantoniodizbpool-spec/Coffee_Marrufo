@@ -97,33 +97,54 @@
                       :options="chart1.configuracion" 
                       :series="chart1.series"></apexchart>
                   </div>
-                  <div class="flex justify-around">
-                    <p class="text-[#897961] text-[13px] font-bold leading-normal tracking-[0.015em]">Mon</p>
-                    <p class="text-[#897961] text-[13px] font-bold leading-normal tracking-[0.015em]">Tue</p>
-                    <p class="text-[#897961] text-[13px] font-bold leading-normal tracking-[0.015em]">Wed</p>
-                    <p class="text-[#897961] text-[13px] font-bold leading-normal tracking-[0.015em]">Thu</p>
-                    <p class="text-[#897961] text-[13px] font-bold leading-normal tracking-[0.015em]">Fri</p>
-                    <p class="text-[#897961] text-[13px] font-bold leading-normal tracking-[0.015em]">Sat</p>
-                    <p class="text-[#897961] text-[13px] font-bold leading-normal tracking-[0.015em]">Sun</p>
-                  </div>
+                  
                 </div>
               </div>
 
               <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6">
-                <p class="text-[#181511] text-base font-medium leading-normal">Productos más vendidos</p>
+                <p class="text-[#181511] text-base font-medium leading-normal">Analisis por categoria</p>
                 <p class="text-[#181511] tracking-light text-[32px] font-bold leading-tight truncate">250</p>
                 <div class="flex gap-1">
                   <p class="text-[#897961] text-base font-normal leading-normal">Capuchino</p>
                   <p class="text-[#078810] text-base font-medium leading-normal">20</p>
                 </div>
-                aqui va el gráfico de barras
-                <apexchart 
-                      :options="configuracion" 
-                      :series="valores">
-                </apexchart>
+                <div class="flex items-center">
+                    <select v-model="filtro_chart_2" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
+                      <option value="">Todos</option>
+                      <option v-for='genero in generos' :value="genero">@{{ genero }}</option>
+                    </select>
+                  </div>
+                  <apexchart
+                      :options="chart2.configuracion" 
+                      :series="chart2.series"></apexchart>
               </div>
             </div>
-
+            <!--Reglon 2-->
+            <h2 class="text-[#181511] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">analisis demograficos</h2>
+            <div class="flex flex-wrap gap-4 px-4 py-6">
+              <!--chart3-->
+              <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6">
+                <p class="text-[#181511] text-base font-medium leading-normal">usuarios x generos</p>
+                <div class="flex gap-2 items-center">
+                    <select  v-model="filtro_chart_3.idedad" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
+                      <option value="">Todas las edades</option>
+                      <option v-for='edad in edades' :value="edad.id">@{{ edad.nombre }}</option>
+                    </select>
+                      <select  v-model="filtro_chart_3.idocupacion" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
+                      <option value="">Todas las ocupaciones</option>
+                      <option v-for='ocupacion in ocupaciones' :value="ocupacion.id">@{{ ocupacion.nombre }}</option>
+                    </select>
+                  </div>
+                 <apexchart
+                      :options="chart3.configuracion" 
+                      :series="chart3.series"></apexchart>
+              </div>
+              <!--chart 4-->
+              <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6">
+                aqui va la grafuca 4
+              </div>
+            </div>
+            <!--Reglon 2-->
             <div class="flex flex-wrap gap-4 px-4 py-6">
               
               <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6 relative">
@@ -200,16 +221,19 @@
     <script src="{{ asset('vue.js') }}"></script>
     <script src="{{ asset('vue-apexcharts.js') }}"></script>
     <script src="{{ asset('PlantillaColumna.js') }}"></script>
-    
-    <script>
+    <script src="{{ asset('PlantillaPie.js') }}"></script>
+
+   <script>
       Vue.component('apexchart', VueApexCharts);
       var app = new Vue({
         el: '#app',
         data: {
-          total_ventas: 0
-          ,series1: []
-          ,valores: [44, 55, 13, 43, 22]
-          ,configuracion: {
+          total_ventas: 0,
+          series1: [],
+          series2: [],
+          series3: [],
+          valores: [44, 55, 13, 43, 22],
+          configuracion: {
             chart: {
               width: 380,
               type: 'pie',
@@ -225,84 +249,191 @@
                   position: 'bottom'
                 }
               }
-             }]
-            }
-            ,productos:<?php echo json_encode($productos); ?>
-            ,filtro_chart_1: '0'
-          } 
-        ,methods: {}
-        ,computed:{
+            }]
+          },
+          productos: <?php echo json_encode($productos); ?>,
+          generos: <?php echo json_encode($generos); ?>,
+          edades: <?php echo json_encode($edades); ?>,
+          ocupaciones: <?php echo json_encode($ocupaciones); ?>,
+          filtro_chart_1: '0',
+          filtro_chart_2: '',
+          filtro_chart_3:{
+            idedad: 0,
+            idocupacion: 0
+          }
+        },
+        methods: {},
+        computed: {
           chart1: function() { 
-            let plantilla=Columna();
+            let plantilla = Columna();
             plantilla.xaxis.categories.push('ventas');
-            let final={
-              series:this.series1
-              ,configuracion:plantilla
+            let final = {
+              series: this.series1,
+              configuracion: plantilla
+            };
+            return final;
+          },
+          chart2: function() { 
+            let plantilla = Columna();
+            plantilla.xaxis.categories.push('ventas');
+            let final = {
+              series: this.series2,
+              configuracion: plantilla
+            };
+            return final;
+          },
+          chart3: function() { 
+            let plantilla = Pie();
+            let final = {
+              series: [],
+              configuracion: plantilla
+            };
+            for(i=0;i<this.series3.length;i++){
+              final.series.push(this.series3[i].total)
+              final.configuracion.labels.push(this.series3[i].genero);
             } 
             return final;
-          } 
-        } 
-        ,watch:{
-            filtro_chart_1:function(newValue){
+          }
+        },
+        watch: {
+          filtro_chart_1: function(newValue) {
+            this.series1.splice(0, this.series1.length);
 
-              this.series1.splice(0,this.series1.length);
-
-              var xhr = new XMLHttpRequest();
-          xhr.open('POST', '{{ route("total_ventas") }}', true);
-          var self = this;
-          xhr.onreadystatechange = function() {
-            if (this.readyState == 4){
-              //pregunto si salio bien
-              if (this.status == 200) {
-                info=JSON.parse(this.responseText);
-                self.total_ventas = info.total;
-                for(i=0;i<info.tendencia.length;i++){
-                  self.series1.push(
-                    {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '{{ route("total_ventas") }}', true);
+            var self = this;
+            xhr.onreadystatechange = function() {
+              if (this.readyState == 4) {
+                if (this.status == 200) {
+                  info = JSON.parse(this.responseText);
+                  self.total_ventas = info.total;
+                  for(i = 0; i < info.tendencia.length; i++) {
+                    self.series1.push({
                       name: info.tendencia[i].fecha,
                       data: [parseFloat(info.tendencia[i].total_ventas)]
-                    }
-                  );
+                    });
+                  }
+                  console.log('ya cargo', info);
                 }
-                console.log('ya cargo' ,info);
+              }
             }
-          } 
-        }
-          xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-          xhr.send(JSON.stringify({
-                                  idproducto:newValue
-                                  ,_token:'{{ csrf_token() }}'
-                                }));
-            } 
-        }
-        ,components: {
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.send(JSON.stringify({
+              idproducto: newValue,
+              _token: '{{ csrf_token() }}'
+            }));
+          },
+          filtro_chart_2: function(newValue) {
+            this.series2.splice(0, this.series2.length);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '{{ route("total_ventas_categoria") }}', true);
+            var self = this;
+            xhr.onreadystatechange = function() {
+              if (this.readyState == 4) {
+                if (this.status == 200) {
+                  info = JSON.parse(this.responseText);
+                  for(i = 0; i < info.categorias.length; i++) {
+                    self.series2.push({
+                      name: info.categorias[i].nombre,
+                      data: [parseFloat(info.categorias[i].total)]
+                    });
+                  }
+                }
+              }
+            }
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.send(JSON.stringify({
+              genero: newValue,
+              _token: '{{ csrf_token() }}'
+            }));
+          },
+          filtro_chart_3: {
+            handler: function(newValue) {
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST', '{{ route("demografico_genero") }}', true);
+              var self = this; 
+              xhr.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                  if (this.status == 200) {
+                    self.series3.splice(0, self.series3.length);
+                    info = JSON.parse(this.responseText);
+                    for(i = 0; i < info.length; i++) {
+                      self.series3.push(info[i]);
+                    }
+                  }
+                }
+              }
+              xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+              xhr.send(JSON.stringify({
+                idedad: newValue.idedad,
+                idocupacion: newValue.idocupacion,
+                _token: '{{ csrf_token() }}'
+              }));
+            },
+            deep: true
+          }
+        },
+        components: {
           apexchart: VueApexCharts
-        }
-        ,created() {
+        },
+        created() {
+          //datos del chart1
           var xhr = new XMLHttpRequest();
           xhr.open('GET', '{{ route("total_ventas") }}', true);
           var self = this;
           xhr.onreadystatechange = function() {
-            if (this.readyState == 4){
-              //pregunto si salio bien
+            if (this.readyState == 4) {
               if (this.status == 200) {
-                info=JSON.parse(this.responseText);
+                info = JSON.parse(this.responseText);
                 self.total_ventas = info.total;
-                for(i=0;i<info.tendencia.length;i++){
-                  self.series1.push(
-                    {
-                      name: info.tendencia[i].fecha,
-                      data: [parseFloat(info.tendencia[i].total_ventas)]
-                    }
-                  );
+                for(i = 0; i < info.tendencia.length; i++) {
+                  self.series1.push({
+                    name: info.tendencia[i].fecha,
+                    data: [parseFloat(info.tendencia[i].total_ventas)]
+                  });
                 }
-                console.log('ya cargo' ,info);
+                console.log('ya cargo', info);
+              }
             }
-          } 
-        }
+          }
+          xhr.send();
+
+          //datos del chart2
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', '{{ route("total_ventas_categoria") }}', true);
+          var self = this; 
+          xhr.onreadystatechange = function() {
+            if (this.readyState == 4) {
+              if (this.status == 200) {
+                info = JSON.parse(this.responseText);
+                for(i = 0; i < info.categorias.length; i++) {
+                  self.series2.push({
+                    name: info.categorias[i].nombre,
+                    data: [parseFloat(info.categorias[i].total)]
+                  });
+                }
+              }
+            }
+          }
+          xhr.send();
+
+          //datos del chart3
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', '{{ route("demografico_genero") }}', true);
+          var self = this; 
+          xhr.onreadystatechange = function() {
+            if (this.readyState == 4) {
+              if (this.status == 200) {
+                info = JSON.parse(this.responseText);
+                for(i = 0; i < info.length; i++) {
+                  self.series3.push(info[i]);
+                }
+              }
+            }
+          }
           xhr.send();
         }
       }); 
     </script>
-  </body>
 </html>
