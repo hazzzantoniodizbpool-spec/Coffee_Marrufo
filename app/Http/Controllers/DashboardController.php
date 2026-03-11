@@ -83,7 +83,6 @@ class DashboardController extends Controller
 
     function total_ventas_categoria(Request $r){
         $context=$r->all();
-
         $servicio=new ServicioKPI();
         $objeto=new \stdClass();
         if(isset($context['genero']))
@@ -106,5 +105,19 @@ class DashboardController extends Controller
         $resultado=$servicio->demografico_genero($objeto);
         return response()->json($resultado);
     }
+
+    // Agregar este método después de demografico_genero
+function demografico_edades(Request $r){
+    $context=$r->all();
+    $servicio=new ServicioKPI();
+    $objeto=new \stdClass();
+    if(isset($context['genero']))
+        $objeto->genero=$context['genero'];
+    if(isset($context['idocupacion']))
+        $objeto->idocupacion=$context['idocupacion'];
+    $resultado=new \stdClass();
+    $resultado=$servicio->demografico_edades($objeto);
+    return response()->json($resultado);
+}
 
 }

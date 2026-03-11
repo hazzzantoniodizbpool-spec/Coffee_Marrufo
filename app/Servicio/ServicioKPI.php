@@ -44,7 +44,7 @@ class ServicioKPI
      * group by DATE_FORMAT(orden.fecha, "%m-%Y")
      * order by DATE_FORMAT(orden.fecha, "%Y-%m") desc
      */
-    function total_ventas($objeto){
+   function total_ventas($objeto){
        if(!isset($objeto->meses)){
             $objeto->meses = 3;
        }
@@ -56,17 +56,15 @@ class ServicioKPI
        if(!isset($objeto->tendencias)){
             $objeto->tendencias = false;
        }
-       //1.Defino la consulta base
+       
        if($objeto->idproducto==0){
-        //sin filtro de producto
             $consulta = DB::table("orden")
                 ->select(
                     DB::raw("SUM(orden.total) as total_ventas"))
                 ->whereRaw("orden.fecha >= DATE_SUB(now(), INTERVAL ".$objeto->meses." MONTH)");
        }
        else{
-        //con filtro de producto
-        $consulta = DB::table("orden")
+            $consulta = DB::table("orden")
                 ->join("detalle_orden", "detalle_orden.idorden", "=", "orden.id")
                 ->select(
                     DB::raw("SUM(detalle_orden.cantidad * detalle_orden.precio) as total_ventas"))
@@ -74,18 +72,13 @@ class ServicioKPI
                 ->where("detalle_orden.idproducto", $objeto->idproducto);
        }
 
-        //2.configuro la consulta 
         if($objeto->tendencias){
             $consulta->groupBy(DB::raw("DATE_FORMAT(orden.fecha, '%m-%Y')"))
                     ->orderBy(DB::raw("DATE_FORMAT(orden.fecha, '%Y-%m')"), "asc")
                     ->addSelect(DB::raw("DATE_FORMAT(orden.fecha, '%m-%Y') as fecha"));
         }
 
-
-        //3.ejecuto la consulta
         return $consulta->get();  
-        //return array();
-       // return null; //← SOLO PARA PRUEBAS, LUEGO ELIMINAR ESTA LÍNEA Y DESCOMENTAR LA ANTERIOR  
     }
     /**
      * consulta base
@@ -260,5 +253,31 @@ class ServicioKPI
     
             return $consulta->get();   
     }
+
+    // Agregar este método después de demografico_genero
+function demografico_edades($objeto){
+    if(!isset($objeto->genero))
+        $objeto->genero = '';
+    if(!isset($objeto->idocupacion))
+        $objeto->idocupacion = 0;
+
+    $consulta = DB::table('cliente')
+    ->join('edad', 'cliente.idedad', '=', 'edad.id')
+    ->select(
+        "edad.nombre as rango_edad",
+        DB::raw("COUNT(*) as total")
+    )
+    ->groupBy("edad.id", "edad.nombre");
+        
+    if($objeto->genero != ''){
+        $consulta->where("cliente.genero", $objeto->genero);
+    }
+    
+    if($objeto->idocupacion != 0){
+        $consulta->where("cliente.idocupacion", $objeto->idocupacion);
+    }
+
+    return $consulta->get();   
+}
 
 }

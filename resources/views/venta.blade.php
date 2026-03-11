@@ -7,6 +7,8 @@
 
   
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -491,33 +493,52 @@
                       }
 
                       ,guardar_orden:function(){
-                        console.log('a guardar se ha dicho');
-                        this.procesando_orden=true;
-                            var self=this;
-                            //El objetivo XMLHttpRequest es el encargado de hacer las peticiones asincronas
-                            var xhr = new XMLHttpRequest();
-                          //Aqui se abre la conexion, se indica a que URL (ruta)se va a acceder
-                          //Y si se va a utilizar GET o POST
-                          xhr.open('POST', '/api/venta/save', true);
-                          //Se hace esta linea para indicar a Javascript que este pendiente
-                          //cuando el estado de la peticion cambie
-                          xhr.onreadystatechange =  function(){
-                          //En esta linea preguntamos si la conexion se ha terminado
-                              if (this.readyState == 4){
-                                  self.procesando_orden=false;
-                                if (this.status == 200){
-                                    alert('Orden guardada');
-                            }
-                            else{
-                                alert('Algo salio mal');
-                            }
-                            self.limpiar_orden();
-                        }
-                        }
-                      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                      xhr.send(JSON.stringify(this.orden));
-
-                      }
+    // 👇 VALIDACIÓN: si no hay productos, no guarda y muestra mensaje
+    if(this.orden.length === 0){
+        Swal.fire({
+            title: 'Carrito vacío',
+            text: 'Agrega productos antes de completar la orden',
+            icon: 'warning',
+            confirmButtonColor: '#ec9213',
+            confirmButtonText: 'Aceptar'
+        });
+        return; // 👈 Sale de la función sin guardar
+    }
+    
+    console.log('a guardar se ha dicho');
+    this.procesando_orden=true;
+    var self=this;
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/venta/save', true);
+    xhr.onreadystatechange =  function(){
+        if (this.readyState == 4){
+            self.procesando_orden=false;
+            if (this.status == 200){
+                Swal.fire({
+                    title: '¡Orden guardada!',
+                    text: 'Tu orden se ha registrado correctamente',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: true,
+                    confirmButtonColor: '#10B981',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+            else{
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Algo salió mal al guardar la orden',
+                    icon: 'error',
+                    confirmButtonColor: '#ef4444',
+                    confirmButtonText: 'Cerrar'
+                });
+            }
+            self.limpiar_orden();
+        }
+    }
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send(JSON.stringify(this.orden));
+}
 
                       ,dame_extras:function(idcategoria){
                         return this.complementos.filter(function(item){

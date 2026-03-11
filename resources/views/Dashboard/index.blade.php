@@ -97,28 +97,28 @@
                       :options="chart1.configuracion" 
                       :series="chart1.series"></apexchart>
                   </div>
-                  
                 </div>
               </div>
 
               <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6">
                 <p class="text-[#181511] text-base font-medium leading-normal">Analisis por categoria</p>
-                <p class="text-[#181511] tracking-light text-[32px] font-bold leading-tight truncate">250</p>
+                <p class="text-[#181511] tracking-light text-[32px] font-bold leading-tight truncate">$@{{ total_categoria }}</p>
                 <div class="flex gap-1">
                   <p class="text-[#897961] text-base font-normal leading-normal">Capuchino</p>
                   <p class="text-[#078810] text-base font-medium leading-normal">20</p>
                 </div>
                 <div class="flex items-center">
-                    <select v-model="filtro_chart_2" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
-                      <option value="">Todos</option>
-                      <option v-for='genero in generos' :value="genero">@{{ genero }}</option>
-                    </select>
-                  </div>
-                  <apexchart
-                      :options="chart2.configuracion" 
-                      :series="chart2.series"></apexchart>
+                  <select v-model="filtro_chart_2" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
+                    <option value="">Todos</option>
+                    <option v-for='genero in generos' :value="genero">@{{ genero }}</option>
+                  </select>
+                </div>
+                <apexchart
+                  :options="chart2.configuracion" 
+                  :series="chart2.series"></apexchart>
               </div>
             </div>
+            
             <!--Reglon 2-->
             <h2 class="text-[#181511] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">analisis demograficos</h2>
             <div class="flex flex-wrap gap-4 px-4 py-6">
@@ -126,25 +126,40 @@
               <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6">
                 <p class="text-[#181511] text-base font-medium leading-normal">usuarios x generos</p>
                 <div class="flex gap-2 items-center">
-                    <select  v-model="filtro_chart_3.idedad" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
-                      <option value="">Todas las edades</option>
-                      <option v-for='edad in edades' :value="edad.id">@{{ edad.nombre }}</option>
-                    </select>
-                      <select  v-model="filtro_chart_3.idocupacion" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
-                      <option value="">Todas las ocupaciones</option>
-                      <option v-for='ocupacion in ocupaciones' :value="ocupacion.id">@{{ ocupacion.nombre }}</option>
-                    </select>
-                  </div>
-                 <apexchart
-                      :options="chart3.configuracion" 
-                      :series="chart3.series"></apexchart>
+                  <select v-model="filtro_chart_3.idedad" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
+                    <option value="">Todas las edades</option>
+                    <option v-for='edad in edades' :value="edad.id">@{{ edad.nombre }}</option>
+                  </select>
+                  <select v-model="filtro_chart_3.idocupacion" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
+                    <option value="">Todas las ocupaciones</option>
+                    <option v-for='ocupacion in ocupaciones' :value="ocupacion.id">@{{ ocupacion.nombre }}</option>
+                  </select>
+                </div>
+                <apexchart
+                  :options="chart3.configuracion" 
+                  :series="chart3.series"></apexchart>
               </div>
+              
               <!--chart 4-->
               <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6">
-                aqui va la grafuca 4
+                <p class="text-[#181511] text-base font-medium leading-normal">Distribución por edades</p>
+                <div class="flex gap-2 items-center">
+                  <select v-model="filtro_chart_4.genero" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
+                    <option value="">Todos los géneros</option>
+                    <option v-for='genero in generos' :value="genero">@{{ genero }}</option>
+                  </select>
+                  <select v-model="filtro_chart_4.idocupacion" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
+                    <option value="">Todas las ocupaciones</option>
+                    <option v-for='ocupacion in ocupaciones' :value="ocupacion.id">@{{ ocupacion.nombre }}</option>
+                  </select>
+                </div>
+                <apexchart
+                  :options="chart4.configuracion" 
+                  :series="chart4.series"></apexchart>
               </div>
             </div>
-            <!--Reglon 2-->
+            
+            <!--Reglon 3-->
             <div class="flex flex-wrap gap-4 px-4 py-6">
               
               <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6 relative">
@@ -223,15 +238,17 @@
     <script src="{{ asset('PlantillaColumna.js') }}"></script>
     <script src="{{ asset('PlantillaPie.js') }}"></script>
 
-   <script>
+    <script>
       Vue.component('apexchart', VueApexCharts);
       var app = new Vue({
         el: '#app',
         data: {
+          total_categoria: 0,
           total_ventas: 0,
           series1: [],
           series2: [],
           series3: [],
+          series4: [],
           valores: [44, 55, 13, 43, 22],
           configuracion: {
             chart: {
@@ -259,6 +276,10 @@
           filtro_chart_2: '',
           filtro_chart_3:{
             idedad: 0,
+            idocupacion: 0
+          },
+          filtro_chart_4: {
+            genero: '',
             idocupacion: 0
           }
         },
@@ -293,7 +314,19 @@
               final.configuracion.labels.push(this.series3[i].genero);
             } 
             return final;
-          }
+          },
+          chart4: function() { 
+    let plantilla = Pie();
+    let final = {
+        series: [],
+        configuracion: plantilla
+    };
+    for(i=0;i<this.series4.length;i++){
+        final.series.push(this.series4[i].total)
+        final.configuracion.labels.push(this.series4[i].rango_edad);
+    } 
+    return final;
+}
         },
         watch: {
           filtro_chart_1: function(newValue) {
@@ -325,6 +358,7 @@
           },
           filtro_chart_2: function(newValue) {
             this.series2.splice(0, this.series2.length);
+            this.total_categoria = 0;
 
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '{{ route("total_ventas_categoria") }}', true);
@@ -333,12 +367,15 @@
               if (this.readyState == 4) {
                 if (this.status == 200) {
                   info = JSON.parse(this.responseText);
+                  let sumaTotal = 0;
                   for(i = 0; i < info.categorias.length; i++) {
                     self.series2.push({
                       name: info.categorias[i].nombre,
                       data: [parseFloat(info.categorias[i].total)]
                     });
+                    sumaTotal += parseFloat(info.categorias[i].total);
                   }
+                  self.total_categoria = sumaTotal;
                 }
               }
             }
@@ -372,17 +409,42 @@
               }));
             },
             deep: true
+          },
+          filtro_chart_4: {
+            handler: function(newValue) {
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST', '{{ route("demografico_edades") }}', true);
+              var self = this; 
+              xhr.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                  if (this.status == 200) {
+                    self.series4.splice(0, self.series4.length);
+                    info = JSON.parse(this.responseText);
+                    for(i = 0; i < info.length; i++) {
+                      self.series4.push(info[i]);
+                    }
+                  }
+                }
+              }
+              xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+              xhr.send(JSON.stringify({
+                genero: newValue.genero,
+                idocupacion: newValue.idocupacion,
+                _token: '{{ csrf_token() }}'
+              }));
+            },
+            deep: true
           }
         },
         components: {
           apexchart: VueApexCharts
         },
         created() {
-          //datos del chart1
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', '{{ route("total_ventas") }}', true);
           var self = this;
-          xhr.onreadystatechange = function() {
+          
+          var xhr1 = new XMLHttpRequest();
+          xhr1.open('GET', '{{ route("total_ventas") }}', true);
+          xhr1.onreadystatechange = function() {
             if (this.readyState == 4) {
               if (this.status == 200) {
                 info = JSON.parse(this.responseText);
@@ -397,32 +459,31 @@
               }
             }
           }
-          xhr.send();
+          xhr1.send();
 
-          //datos del chart2
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', '{{ route("total_ventas_categoria") }}', true);
-          var self = this; 
-          xhr.onreadystatechange = function() {
+          var xhr2 = new XMLHttpRequest();
+          xhr2.open('GET', '{{ route("total_ventas_categoria") }}', true);
+          xhr2.onreadystatechange = function() {
             if (this.readyState == 4) {
               if (this.status == 200) {
                 info = JSON.parse(this.responseText);
+                let sumaTotal = 0;
                 for(i = 0; i < info.categorias.length; i++) {
                   self.series2.push({
                     name: info.categorias[i].nombre,
                     data: [parseFloat(info.categorias[i].total)]
                   });
+                  sumaTotal += parseFloat(info.categorias[i].total);
                 }
+                self.total_categoria = sumaTotal;
               }
             }
           }
-          xhr.send();
+          xhr2.send();
 
-          //datos del chart3
-          var xhr = new XMLHttpRequest();
-          xhr.open('GET', '{{ route("demografico_genero") }}', true);
-          var self = this; 
-          xhr.onreadystatechange = function() {
+          var xhr3 = new XMLHttpRequest();
+          xhr3.open('GET', '{{ route("demografico_genero") }}', true);
+          xhr3.onreadystatechange = function() {
             if (this.readyState == 4) {
               if (this.status == 200) {
                 info = JSON.parse(this.responseText);
@@ -432,8 +493,23 @@
               }
             }
           }
-          xhr.send();
+          xhr3.send();
+
+          var xhr4 = new XMLHttpRequest();
+          xhr4.open('GET', '{{ route("demografico_edades") }}', true);
+          xhr4.onreadystatechange = function() {
+            if (this.readyState == 4) {
+              if (this.status == 200) {
+                info = JSON.parse(this.responseText);
+                for(i = 0; i < info.length; i++) {
+                  self.series4.push(info[i]);
+                }
+              }
+            }
+          }
+          xhr4.send();
         }
       }); 
     </script>
+  </body>
 </html>
