@@ -7,7 +7,6 @@
       onload="this.rel='stylesheet'"
       href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Work+Sans%3Awght%40400%3B500%3B700%3B900"
     />
-
     <title>Cofee Dashboard</title>
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -17,6 +16,7 @@
     <div id="app" class="relative flex h-auto min-h-screen w-full flex-col bg-white group/design-root overflow-x-hidden" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
       <div class="layout-container flex h-full grow flex-col">
         
+        <!-- Encabezado -->
         <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f4f3f0] px-10 py-3">
           <div class="flex items-center gap-4 text-[#181511]">
             <div class="size-4">
@@ -58,9 +58,11 @@
           </div>
         </header>
 
+        <!-- Contenido principal -->
         <div class="px-40 flex flex-1 justify-center py-5">
           <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
             
+            <!-- Título de la consola -->
             <div class="flex flex-wrap justify-between gap-3 p-4">
               <div class="flex min-w-72 flex-col gap-3">
                 <p class="text-[#181511] tracking-light text-[32px] font-bold leading-tight">Consola Ecommerce</p>
@@ -68,11 +70,13 @@
               </div>
             </div>
             
+            <!-- Indicadores de ventas -->
             <h2 class="text-[#181511] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Indicadores de ventas</h2>
             <p class="text-[#897961] px-4 text-sm font-normal leading-normal">Últimos 3 meses.</p>
             
             <div class="flex flex-wrap gap-4 px-4 py-6">
               
+              <!-- Chart 1: Ventas totales -->
               <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6">
                 <div class="flex items-start justify-between">
                   <div class="flex flex-col gap-2">
@@ -83,10 +87,17 @@
                       <p class="text-[#078810] text-base font-medium leading-normal">$1,250</p>
                     </div>
                   </div>
-                  <div class="flex items-center">
-                    <select v-model="filtro_chart_1" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
-                      <option value="0">Todos</option>
+                  <div class="flex items-center gap-2">
+                    <select v-model="filtro_chart_1.idproducto" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
+                      <option value="0">Todos los productos</option>
                       <option v-for='producto in productos' :value="producto.id">@{{ producto.nombre }}</option>
+                    </select>
+                    <select v-model="filtro_chart_1.canal" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
+                      <option value="">Todos los canales</option>
+                      <option value="WEB">WEB</option>
+                      <option value="APP">APP</option>
+                      <option value="KIOSKO">KIOSKO</option>
+                      <option value="TAQUILLA">TAQUILLA</option>
                     </select>
                   </div>
                 </div>
@@ -100,6 +111,7 @@
                 </div>
               </div>
 
+              <!-- Chart 2: Análisis por categoría -->
               <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6">
                 <p class="text-[#181511] text-base font-medium leading-normal">Analisis por categoria</p>
                 <p class="text-[#181511] tracking-light text-[32px] font-bold leading-tight truncate">$@{{ total_categoria }}</p>
@@ -119,10 +131,11 @@
               </div>
             </div>
             
-            <!--Reglon 2-->
+            <!-- Análisis demográficos -->
             <h2 class="text-[#181511] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">analisis demograficos</h2>
             <div class="flex flex-wrap gap-4 px-4 py-6">
-              <!--chart3-->
+              
+              <!-- Chart 3: Usuarios por géneros -->
               <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6">
                 <p class="text-[#181511] text-base font-medium leading-normal">usuarios x generos</p>
                 <div class="flex gap-2 items-center">
@@ -140,7 +153,7 @@
                   :series="chart3.series"></apexchart>
               </div>
               
-              <!--chart 4-->
+              <!-- Chart 4: Distribución por edades -->
               <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6">
                 <p class="text-[#181511] text-base font-medium leading-normal">Distribución por edades</p>
                 <div class="flex gap-2 items-center">
@@ -159,47 +172,25 @@
               </div>
             </div>
             
-            <!--Reglon 3-->
+            <!-- Tercer renglón de gráficos -->
             <div class="flex flex-wrap gap-4 px-4 py-6">
               
-              <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6 relative">
-                <div class="flex items-start justify-between">
-                  <div class="flex flex-col gap-2">
-                    <div class="h-5 w-48 animate-pulse rounded bg-[#e6e1db]"></div>
-                    <div class="mt-2 h-10 w-32 animate-pulse rounded bg-[#e6e1db]"></div>
-                  </div>
-                  <div class="flex items-center">
-                    <div class="h-9 w-24 animate-pulse rounded-md bg-[#e6e1db]"></div>
-                  </div>
+              <!-- Chart 5: Ventas por producto -->
+              <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6">
+                <p class="text-[#181511] text-base font-medium leading-normal">Ventas por producto</p>
+                <div class="flex gap-2 items-center">
+                  <select v-model="filtro_chart_5" class="custom-select h-9 cursor-pointer rounded-md border border-[#e6e1db] bg-white px-3 py-1 text-xs font-semibold text-[#897961] focus:border-[#897961] focus:ring-0">
+                    <option value="">Todos</option>
+                    <option value="Hombre">Hombres</option>
+                    <option value="Mujer">Mujeres</option>
+                  </select>
                 </div>
-                <div class="mt-1 flex gap-2">
-                  <div class="h-4 w-20 animate-pulse rounded bg-[#e6e1db]"></div>
-                  <div class="h-4 w-12 animate-pulse rounded bg-[#e6e1db]"></div>
-                </div>
-                <div class="flex min-h-[180px] flex-1 flex-col gap-8 py-4">
-                  <div class="relative h-[148px] w-full">
-                    <div class="flex h-full items-end justify-between gap-4 px-2">
-                      <div class="h-[30%] w-full animate-pulse rounded-t bg-[#f4f3f0]"></div>
-                      <div class="h-[60%] w-full animate-pulse rounded-t bg-[#f4f3f0]"></div>
-                      <div class="h-[45%] w-full animate-pulse rounded-t bg-[#f4f3f0]"></div>
-                      <div class="h-[80%] w-full animate-pulse rounded-t bg-[#f4f3f0]"></div>
-                      <div class="h-[55%] w-full animate-pulse rounded-t bg-[#f4f3f0]"></div>
-                      <div class="h-[70%] w-full animate-pulse rounded-t bg-[#f4f3f0]"></div>
-                      <div class="h-[40%] w-full animate-pulse rounded-t bg-[#f4f3f0]"></div>
-                    </div>
-                  </div>
-                  <div class="flex justify-around">
-                    <div class="h-3 w-8 animate-pulse rounded bg-[#e6e1db]"></div>
-                    <div class="h-3 w-8 animate-pulse rounded bg-[#e6e1db]"></div>
-                    <div class="h-3 w-8 animate-pulse rounded bg-[#e6e1db]"></div>
-                    <div class="h-3 w-8 animate-pulse rounded bg-[#e6e1db]"></div>
-                    <div class="h-3 w-8 animate-pulse rounded bg-[#e6e1db]"></div>
-                    <div class="h-3 w-8 animate-pulse rounded bg-[#e6e1db]"></div>
-                    <div class="h-3 w-8 animate-pulse rounded bg-[#e6e1db]"></div>
-                  </div>
-                </div>
+                <apexchart
+                  :options="chart5.configuracion" 
+                  :series="chart5.series"></apexchart>
               </div>
 
+              <!-- Customer Traffic Projection (placeholder) -->
               <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#e6e1db] p-6 relative bg-white/50">
                 <div class="flex items-start justify-between">
                   <div class="flex flex-col gap-2">
@@ -232,6 +223,7 @@
       </div>
     </div>
 
+    <!-- Scripts -->
     <script src="{{ asset('apexcharts.js') }}"></script>
     <script src="{{ asset('vue.js') }}"></script>
     <script src="{{ asset('vue-apexcharts.js') }}"></script>
@@ -240,8 +232,10 @@
 
     <script>
       Vue.component('apexchart', VueApexCharts);
+      
       var app = new Vue({
         el: '#app',
+        
         data: {
           total_categoria: 0,
           total_ventas: 0,
@@ -249,6 +243,7 @@
           series2: [],
           series3: [],
           series4: [],
+          series5: [],
           valores: [44, 55, 13, 43, 22],
           configuracion: {
             chart: {
@@ -272,18 +267,24 @@
           generos: <?php echo json_encode($generos); ?>,
           edades: <?php echo json_encode($edades); ?>,
           ocupaciones: <?php echo json_encode($ocupaciones); ?>,
-          filtro_chart_1: '0',
+          filtro_chart_1: {
+            idproducto: '0',
+            canal: ''
+          },
           filtro_chart_2: '',
-          filtro_chart_3:{
+          filtro_chart_3: {
             idedad: 0,
             idocupacion: 0
           },
           filtro_chart_4: {
             genero: '',
             idocupacion: 0
-          }
+          },
+          filtro_chart_5: ''
         },
+        
         methods: {},
+        
         computed: {
           chart1: function() { 
             let plantilla = Columna();
@@ -294,6 +295,7 @@
             };
             return final;
           },
+          
           chart2: function() { 
             let plantilla = Columna();
             plantilla.xaxis.categories.push('ventas');
@@ -303,59 +305,77 @@
             };
             return final;
           },
+          
           chart3: function() { 
             let plantilla = Pie();
             let final = {
               series: [],
               configuracion: plantilla
             };
-            for(i=0;i<this.series3.length;i++){
+            for(i = 0; i < this.series3.length; i++) {
               final.series.push(this.series3[i].total)
               final.configuracion.labels.push(this.series3[i].genero);
             } 
             return final;
           },
+          
           chart4: function() { 
-    let plantilla = Pie();
-    let final = {
-        series: [],
-        configuracion: plantilla
-    };
-    for(i=0;i<this.series4.length;i++){
-        final.series.push(this.series4[i].total)
-        final.configuracion.labels.push(this.series4[i].rango_edad);
-    } 
-    return final;
-}
+            let plantilla = Pie();
+            let final = {
+              series: [],
+              configuracion: plantilla
+            };
+            for(i = 0; i < this.series4.length; i++) {
+              final.series.push(this.series4[i].total)
+              final.configuracion.labels.push(this.series4[i].rango_edad);
+            } 
+            return final;
+          },
+          
+          chart5: function() {
+            let plantilla = Columna();
+            // solo una categoría en X
+            plantilla.xaxis.categories = ['Ventas'];
+            return {
+              series: this.series5,
+              configuracion: plantilla
+            }
+          }
         },
+        
         watch: {
-          filtro_chart_1: function(newValue) {
-            this.series1.splice(0, this.series1.length);
+          filtro_chart_1: {
+            handler: function(newValue) {
+              this.series1.splice(0, this.series1.length);
 
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '{{ route("total_ventas") }}', true);
-            var self = this;
-            xhr.onreadystatechange = function() {
-              if (this.readyState == 4) {
-                if (this.status == 200) {
-                  info = JSON.parse(this.responseText);
-                  self.total_ventas = info.total;
-                  for(i = 0; i < info.tendencia.length; i++) {
-                    self.series1.push({
-                      name: info.tendencia[i].fecha,
-                      data: [parseFloat(info.tendencia[i].total_ventas)]
-                    });
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST', '{{ route("total_ventas") }}', true);
+              var self = this;
+              xhr.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                  if (this.status == 200) {
+                    info = JSON.parse(this.responseText);
+                    self.total_ventas = info.total;
+                    for(i = 0; i < info.tendencia.length; i++) {
+                      self.series1.push({
+                        name: info.tendencia[i].fecha,
+                        data: [parseFloat(info.tendencia[i].total_ventas)]
+                      });
+                    }
+                    console.log('ya cargo', info);
                   }
-                  console.log('ya cargo', info);
                 }
               }
-            }
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhr.send(JSON.stringify({
-              idproducto: newValue,
-              _token: '{{ csrf_token() }}'
-            }));
+              xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+              xhr.send(JSON.stringify({
+                idproducto: newValue.idproducto,
+                canal: newValue.canal,
+                _token: '{{ csrf_token() }}'
+              }));
+            },
+            deep: true
           },
+          
           filtro_chart_2: function(newValue) {
             this.series2.splice(0, this.series2.length);
             this.total_categoria = 0;
@@ -385,6 +405,7 @@
               _token: '{{ csrf_token() }}'
             }));
           },
+          
           filtro_chart_3: {
             handler: function(newValue) {
               var xhr = new XMLHttpRequest();
@@ -410,6 +431,7 @@
             },
             deep: true
           },
+          
           filtro_chart_4: {
             handler: function(newValue) {
               var xhr = new XMLHttpRequest();
@@ -434,14 +456,44 @@
               }));
             },
             deep: true
+          },
+          
+          filtro_chart_5: {
+            handler: function(newValue) {
+              // Limpiar series antes de cargar nuevos datos
+              this.series5.splice(0, this.series5.length);
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST', '{{ route("ventas_producto_genero") }}', true);
+              var self = this;
+              xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                  let info = JSON.parse(this.responseText);
+                  for (let i = 0; i < info.length; i++) {
+                    self.series5.push({
+                      name: info[i].nombre,
+                      data: [parseFloat(info[i].total)]
+                    });
+                  }
+                }
+              }
+              xhr.setRequestHeader("Content-Type", "application/json");
+              xhr.send(JSON.stringify({
+                genero: newValue,
+                _token: '{{ csrf_token() }}'
+              }));
+            },
+            deep: true
           }
         },
+        
         components: {
           apexchart: VueApexCharts
         },
+        
         created() {
           var self = this;
           
+          // Carga inicial chart1
           var xhr1 = new XMLHttpRequest();
           xhr1.open('GET', '{{ route("total_ventas") }}', true);
           xhr1.onreadystatechange = function() {
@@ -461,6 +513,7 @@
           }
           xhr1.send();
 
+          // Carga inicial chart2
           var xhr2 = new XMLHttpRequest();
           xhr2.open('GET', '{{ route("total_ventas_categoria") }}', true);
           xhr2.onreadystatechange = function() {
@@ -481,6 +534,7 @@
           }
           xhr2.send();
 
+          // Carga inicial chart3
           var xhr3 = new XMLHttpRequest();
           xhr3.open('GET', '{{ route("demografico_genero") }}', true);
           xhr3.onreadystatechange = function() {
@@ -495,6 +549,7 @@
           }
           xhr3.send();
 
+          // Carga inicial chart4
           var xhr4 = new XMLHttpRequest();
           xhr4.open('GET', '{{ route("demografico_edades") }}', true);
           xhr4.onreadystatechange = function() {
@@ -508,6 +563,23 @@
             }
           }
           xhr4.send();
+
+          // DATOS DEL CHART5
+          var xhr5 = new XMLHttpRequest();
+          xhr5.open('GET', '{{ route("ventas_producto_genero") }}', true);
+          xhr5.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              let info = JSON.parse(this.responseText);
+              self.series5.splice(0, self.series5.length);
+              for (let i = 0; i < info.length; i++) {
+                self.series5.push({
+                  name: info[i].nombre,
+                  data: [parseFloat(info[i].total)]
+                });
+              }
+            }
+          }
+          xhr5.send();
         }
       }); 
     </script>
