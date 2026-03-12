@@ -9,6 +9,7 @@ use App\Http\Controllers\ExtraController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\DbUpController; 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UsuarioController;
 
 
 Route::get('/', function () {
@@ -88,6 +89,11 @@ Route::post('orden/guardar', [OrdenController::class, 'guardar'])->name ('orden.
 Route::get('/promocion', [PromocionController::class, 'promocion'])->name ('promocion');
 Route::get('promocion/formulario/{id?}', [PromocionController::class, 'formulario'])->name ('promocion.formulario');
 Route::post('promocion/guardar', [PromocionController::class, 'guardar'])->name ('promocion.guardar');
+
+//  Catálogo Usuario
+Route::get('/usuario', [UsuarioController::class, 'lista'])->name('lista');
+Route::get('/usuario/formulario/{id?}', [UsuarioController::class, 'formulario'])->name('usuario.formulario');
+Route::post('/usuario/save', [UsuarioController::class, 'save'])->name('usuario.save');
 
 
 

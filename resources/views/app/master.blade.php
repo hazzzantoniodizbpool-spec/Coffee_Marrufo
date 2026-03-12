@@ -152,7 +152,11 @@
               <p>Promocion</p>
             </a>
           </li>
-
+          <li class="nav-item">
+            <a href="{{ route ('lista') }}" class="nav-link">
+              <p>Usuarios</p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
